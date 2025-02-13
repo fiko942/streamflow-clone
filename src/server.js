@@ -308,21 +308,8 @@ app.post('/start-stream', uploadVideo.single('video'), async (req, res) => {
       .inputFormat('mp4')
       .inputOptions(['-re', ...(loop === 'true' ? ['-stream_loop -1'] : [])])
       .outputOptions([
-        `-r ${fps || 30}`,
-        '-threads 2',
-        '-x264-params "nal-hrd=cbr"',
-        '-c:v libx264',
-        '-preset veryfast',
-        '-tune zerolatency',
-        `-b:v ${bitrate}k`,
-        `-maxrate ${bitrate}k`,
-        `-bufsize ${bitrate * 2}k`,
-        '-pix_fmt yuv420p',
-        '-g 60',
-        `-vf scale=${resolution}`,
-        '-c:a aac',
-        '-b:a 128k',
-        '-ar 44100',
+        '-c:v copy',
+        '-c:a copy',
         '-f flv'
       ]);
 
@@ -560,4 +547,3 @@ for (const iface of Object.values(ifaces)) {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`\x1b[32mStreamFlow berjalan\x1b[0m\nAkses aplikasi di \x1b[34mhttp://${ipAddress}:${PORT}\x1b[0m`));
-
